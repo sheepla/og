@@ -13,6 +13,12 @@
 - `og run`: TODO
 - `og build`: TODO
 
+## Installation
+
+```go
+go install github.com/sheepla/og@latest
+```
+
 ## Author
 
 [Sheepla](https://github.com/sheepla)
