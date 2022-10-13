@@ -4,7 +4,7 @@
 
 </div>
 
-*Typo correction tool for Go programmers!*
+*A typo correcting tool for Go programmers!*
 
 ## Usage
 
