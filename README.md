@@ -29,6 +29,12 @@
 go install github.com/sheepla/og@latest
 ```
 
+## Inspired by
+
+- [nmi](https://github.com/jiro4989/nmi)
+- [sl(1)](https://github.com/mtoyoda/sl)
+- [ducker](https://github.com/kimullaa/ducker)
+
 ## License
 
 - source code: MIT
