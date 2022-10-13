@@ -25,7 +25,7 @@
 
 ## Installation
 
-```go
+```sh
 go install github.com/sheepla/og@latest
 ```
 
