@@ -29,6 +29,13 @@
 go install github.com/sheepla/og@latest
 ```
 
+## License
+
+- source code: MIT
+- ascii art: [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
+
+This is a fan art of Gopher. The Gopher character is based on the Go mascot designed by [Renée French](https://reneefrench.blogspot.com/).
+
 ## Author
 
 [Sheepla](https://github.com/sheepla)
