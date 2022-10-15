@@ -1,3 +1,10 @@
+<div align="right">
+
+![CI](https://github.com/sheepla/og/actions/workflows/ci.yml/badge.svg)
+![Relase](https://github.com/sheepla/og/actions/workflows/release.yml/badge.svg)
+
+</div>
+
 <div align="center">
 
 # og
