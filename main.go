@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/fatih/color"
 	"github.com/mattn/go-colorable"
+	"golang.org/x/term"
 )
 
 type asciiArt string
@@ -19,7 +21,8 @@ var (
 
 //nolint:gochecknoglobals
 var gopher = []asciiArt{
-	`     CCCCCCCCCCCCCCCCCCCCCCCC     `,
+	`                                   `,
+	`     CCCCCCCCCCCCCCCCCCCCCCCC      `,
 	` CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC  `,
 	`CCCCCCCWWWWWWWWCCCCWWWWWWWCCCCCCCC `,
 	`CCCCCCCWBBWWWWWCCCCWBBWWWWCCCCCCCC `,
@@ -37,10 +40,82 @@ var gopher = []asciiArt{
 	`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
 	`  YYYYYCCCCCCCCCCCCCCCCCCCCYYYYY   `,
 	`  YYYYYCCCCCCCCCCCCCCCCCCCCYYYYY   `,
+	`                                   `,
+}
+
+//nolint:gochecknoglobals
+var runningGopher = [][]asciiArt{
+	{
+		`                                   `,
+		`     CCCCCCCCCCCCCCCCCCCCCCCC      `,
+		` CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC  `,
+		`CCCCCCCWWWWWWWWCCCCWWWWWWWCCCCCCCC `,
+		`CCCCCCCWWWWWBBWCCCCWWWWBBWCCCCCCCC `,
+		` CCCCCCWWWWWBBWCCCCWWWWBBWCCCCCCC  `,
+		`   CCCCCCCCCCCCCBBBCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCYYYYYYYCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCWWWCCCCCCCCCYYYYY  `,
+		`   CCCCCCCCCCCCCWWWCCCCCCCCCYYYYY  `,
+		` YYYYYCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		` YYYYYCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`  YYYYYCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`  YYYYYCCCCCCCCCCCCCCCCCCCCYYYYY   `,
+		`     CCCCCCCCCCCCCCCCCCCCCCYYYYY   `,
+		`                                   `,
+	},
+	{
+		`                                   `,
+		`     CCCCCCCCCCCCCCCCCCCCCCCC      `,
+		` CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC  `,
+		`CCCCCCCWWWWWWWWCCCCWWWWWWWCCCCCCCC `,
+		`CCCCCCCWWWWWBBWCCCCWWWWBBWCCCCCCCC `,
+		` CCCCCCWWWWWBBWCCCCWWWWBBWCCCCCCC  `,
+		`   CCCCCCCCCCCCCBBBCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCYYYYYYYCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCWWWCCCCCCCCCYYYYY  `,
+		` YYYYYCCCCCCCCCCWWWCCCCCCCCCYYYYY  `,
+		` YYYYYCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`  YYYYYCCCCCCCCCCCCCCCCCCCCYYYYY   `,
+		`  YYYYYCCCCCCCCCCCCCCCCCCCCYYYYY   `,
+		`                                   `,
+	},
+	{
+		`                                   `,
+		`     CCCCCCCCCCCCCCCCCCCCCCCC      `,
+		` CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC  `,
+		`CCCCCCCWWWWWWWWCCCCWWWWWWWCCCCCCCC `,
+		`CCCCCCCWWWWWBBWCCCCWWWWBBWCCCCCCCC `,
+		` CCCCCCWWWWWBBWCCCCWWWWBBWCCCCCCC  `,
+		`   CCCCCCCCCCCCCBBBCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCYYYYYYYCCCCCCCCCC    `,
+		` YYYYYCCCCCCCCCCWWWCCCCCCCCCCCC    `,
+		` YYYYYCCCCCCCCCCWWWCCCCCCCCCYYYYY  `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCYYYYY  `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCCCCC    `,
+		`   CCCCCCCCCCCCCCCCCCCCCCCCYYYYY   `,
+		`  YYYYYCCCCCCCCCCCCCCCCCCCCYYYYY   `,
+		`  YYYYYCCCCCCCCCCCCCCCCCCCCCC      `,
+		`                                   `,
+	},
 }
 
 //nolint:gochecknoglobals
 var cryingGopher = []asciiArt{
+	`                                   `,
 	`   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^    `,
 	`  <    _   _      _       _    >   `,
 	`  <   | | | | ___| |_ __ | |   >   `,
@@ -69,12 +144,14 @@ var cryingGopher = []asciiArt{
 	`CCCCCCCWWWWWWWWCCCCCWWWWWWWWCCCCCC `,
 	` CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC  `,
 	`     CCCCCCCCCCCCCCCCCCCCCCCC      `,
+	`                                   `,
 }
 
 //nolint:gochecknoglobals
 var readingGopher = []asciiArt{
+	`                                   `,
 	`   ┌─────────────────────────────┐ `,
-	`   │  I'm  reading documents...  │ `,
+	`   │   I'm reading documents...  │ `,
 	`   └───────────────────| /───────┘ `,
 	`                       |/          `,
 	`  YYYYYCCCCCCCCCCCCCCCCCCCCYYYYY   `,
@@ -95,6 +172,7 @@ var readingGopher = []asciiArt{
 	`CCCCCCCWWWWWWWWCCCCWWWWWWWCCCCCCCC `,
 	` CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC  `,
 	`     CCCCCCCCCCCCCCCCCCCCCCCC     `,
+	`                                   `,
 }
 
 func main() {
@@ -119,23 +197,55 @@ func main() {
 }
 
 func runHelpCommand() {
-	g := colorizeASCIIArt(cryingGopher)
-	for _, v := range g {
-		fmt.Fprintln(stdout, v)
+	aa := colorizeASCIIArt(cryingGopher)
+	for _, line := range aa {
+		fmt.Fprintln(stdout, line)
 	}
 }
 
 func runRunCommand() {
-	g := colorizeASCIIArt(gopher)
-	for _, v := range g {
-		fmt.Fprintln(stdout, v)
+	termWidth, _, err := term.GetSize(int(os.Stdout.Fd()))
+	if err != nil {
+		fmt.Fprintln(stderr, err)
+
+		return
+	}
+
+	gopherWidth := len(runningGopher[0][0])
+	gopherHeight := len(runningGopher[0])
+
+	for pad := 0; pad < termWidth-gopherWidth; pad++ {
+		aa := colorizeASCIIArt(runningGopher[pad%3])
+		for _, line := range aa {
+			fmt.Fprintf(stdout, "%s%s\n", strings.Repeat(" ", pad), line)
+		}
+
+		fmt.Fprint(stdout, backCursorAnsi(gopherHeight))
+		fmt.Fprint(stdout, eraseDisplayAnsi())
+
+		//nolint:gomnd
+		time.Sleep(20 * time.Millisecond)
 	}
 }
 
+/*
+func eraseLineAnsi() string {
+	return fmt.Sprintf("%s[%dK", "\x1b", 1)
+}
+*/
+
+func eraseDisplayAnsi() string {
+	return fmt.Sprintf("%s[%dJ", "\x1b", 1)
+}
+
+func backCursorAnsi(n int) string {
+	return fmt.Sprintf("%s[%dF", "\x1b", n)
+}
+
 func runDocCommand() {
-	g := colorizeASCIIArt(readingGopher)
-	for _, v := range g {
-		fmt.Fprintln(stdout, v)
+	aa := colorizeASCIIArt(readingGopher)
+	for _, line := range aa {
+		fmt.Fprintln(stdout, line)
 	}
 }
 

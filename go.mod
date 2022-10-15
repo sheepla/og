@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/fatih/color v1.13.0
 	github.com/mattn/go-colorable v0.1.13
+	golang.org/x/term v0.0.0-20220919170432-7a66f970e087
 )
 
 require (
