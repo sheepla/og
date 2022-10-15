@@ -20,8 +20,9 @@
 
 - `og doc` : Show inverted gopher reading documents
 - `og help`: Show inverted gopher crying for help
-- `og run`: TODO
-- `og build`: TODO
+- `og run`: Run gopher on your terminal
+
+**TODO**: Add more commands
 
 ## Installation
 
@@ -31,8 +32,8 @@ go install github.com/sheepla/og@latest
 
 ## Inspired by
 
-- [nmi](https://github.com/jiro4989/nmi)
 - [sl(1)](https://github.com/mtoyoda/sl)
+- [nmi](https://github.com/jiro4989/nmi)
 - [ducker](https://github.com/kimullaa/ducker)
 
 ## License
@@ -41,6 +42,10 @@ go install github.com/sheepla/og@latest
 - ascii art: [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
 
 This is a fan art of Gopher. The Gopher character is based on the Go mascot designed by [Renée French](https://reneefrench.blogspot.com/).
+
+## Contributing
+
+Welcome!
 
 ## Author
 
