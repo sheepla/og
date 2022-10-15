@@ -186,7 +186,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	switch os.Args[1] {
+	command := os.Args[1]
+	switch command {
 	case "help":
 		runHelpCommand()
 		os.Exit(0)
@@ -197,7 +198,8 @@ func main() {
 		runDocCommand()
 		os.Exit(0)
 	default:
-		break
+		fmt.Fprintf(stderr, "unknown command: %s\n", command)
+		os.Exit(1)
 	}
 }
 
